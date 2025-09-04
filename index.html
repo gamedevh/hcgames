@@ -62,27 +62,45 @@
   </div>
 
   <!-- Game library grid -->
-  <div class="games-grid" id="gamesGrid">
-    <!-- Example game cards -->
-    <div class="game-card" onclick="loadGame('snowrider.html')">
-      <img src="snowrider.jpg" alt="Snow Rider 3D">
-      <h3>Snow Rider 3D</h3>
-    </div>
-    <div class="game-card" onclick="loadGame('retro-bowl.html')">
-      <img src="retrobowl.jpg" alt="Retro Bowl">
-      <h3>Retro Bowl</h3>
-    </div>
-    <div class="game-card" onclick="loadGame('drift-hunters.html')">
-      <img src="drifthunters.jpg" alt="Drift Hunters">
-      <h3>Drift Hunters</h3>
-    </div>
-    <!-- Add 100+ games here following the same format -->
-  </div>
+  <div class="games-grid" id="gamesGrid"></div>
 
   <script>
-    // Simple search filter
+    // Data for available games. The first few entries reference real games in
+    // this project, and the remaining entries are placeholders that should be
+    // replaced with actual game links and images. The loop ensures that more
+    // than 100 entries are present so visitors see a large library.
+    const games = [
+      { title: 'Snow Rider 3D', image: 'snowrider.jpg', link: 'snowrider.html' },
+      { title: 'Retro Bowl', image: 'retrobowl.jpg', link: 'retro-bowl.html' },
+      { title: 'Drift Hunters', image: 'drifthunters.jpg', link: 'drift-hunters.html' }
+    ];
+
+    for (let i = games.length + 1; i <= 103; i++) {
+      games.push({
+        title: `Placeholder Game ${i}`,
+        image: `https://via.placeholder.com/200x140?text=Game+${i}`,
+        link: `placeholder-game-${i}.html`
+      });
+    }
+
     const searchInput = document.getElementById('search');
     const gamesGrid = document.getElementById('gamesGrid');
+
+    function renderGames() {
+      games.forEach(game => {
+        const card = document.createElement('div');
+        card.className = 'game-card';
+        card.onclick = () => loadGame(game.link);
+        card.innerHTML = `
+          <img src="${game.image}" alt="${game.title}">
+          <h3>${game.title}</h3>
+        `;
+        gamesGrid.appendChild(card);
+      });
+    }
+    renderGames();
+
+    // Simple search filter
     searchInput.addEventListener('keyup', () => {
       let filter = searchInput.value.toLowerCase();
       let cards = gamesGrid.getElementsByClassName('game-card');
